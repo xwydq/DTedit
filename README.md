@@ -6,7 +6,7 @@
 Use the `devtools` package to install the development version of `DTedit`:
 
 ```r
-devtools::install_github('jbryer/DTedit')
+devtools::install_github('xwydq/DTedit')
 ```
 
 The `dtedit_demo` will run a sample `shiny` app with to editable data tables.
