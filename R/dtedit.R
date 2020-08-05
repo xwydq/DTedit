@@ -215,12 +215,10 @@ dtedit <- function(input, output, name, thedata,
 
 			} else if(inputTypes[i] == 'selectInputSingle') {
 			  value <- ifelse(missing(values), '', values[,edit.cols[i]])
-			  if(is.list(value)) {
-			    value <- value[[1]]
-			  }
+
 			  choices <- ''
 			  if(!missing(values)) {
-			    choices <- unique(unlist(values[,edit.cols[i]]))
+			    choices <- unique(as.character(values[,edit.cols[i]]))
 			  }
 			  if(!is.null(input.choices)) {
 			    if(edit.cols[i] %in% names(input.choices)) {
