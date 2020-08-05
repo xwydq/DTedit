@@ -136,15 +136,20 @@ dtedit <- function(input, output, name, thedata,
 	selectInputMultiple <- function(...) {
 		shiny::selectInput(multiple = TRUE, selectize = selectize, ...)
 	}
+	
+	selectInputSingle <- function(...) {
+	  shiny::selectInput(multiple = FALSE, selectize = selectize, ...)
+	}
 
 	valid.input.types <- c('dateInput', 'selectInput', 'numericInput',
-						   'textInput', 'textAreaInput', 'passwordInput', 'selectInputMultiple')
+						   'textInput', 'textAreaInput', 'passwordInput', 'selectInputMultiple', 'selectInputSingle')
 	inputTypes <- sapply(thedata[,edit.cols], FUN=function(x) {
 		switch(class(x),
 			   list = 'selectInputMultiple',
 			   character = 'textInput',
 			   Date = 'dateInput',
-			   factor = 'selectInput',
+			   # factor = 'selectInput',
+			   factor = 'selectInputSingle',
 			   integer = 'numericInput',
 			   numeric = 'numericInput')
 	})
@@ -208,6 +213,30 @@ dtedit <- function(input, output, name, thedata,
 										   selected=value,
 										   width=select.width)
 
+			} else if(inputTypes[i] == 'selectInputSingle') {
+			  value <- ifelse(missing(values), '', values[,edit.cols[i]])
+			  if(is.list(value)) {
+			    value <- value[[1]]
+			  }
+			  choices <- ''
+			  if(!missing(values)) {
+			    choices <- unique(unlist(values[,edit.cols[i]]))
+			  }
+			  if(!is.null(input.choices)) {
+			    if(edit.cols[i] %in% names(input.choices)) {
+			      choices <- input.choices[[edit.cols[i]]]
+			    }
+			  }
+			  if(length(choices) == 1 & choices == '') {
+			    warning(paste0('No choices available for ', edit.cols[i],
+			                   '. Specify them using the input.choices parameter'))
+			  }
+			  fields[[i]] <- selectInputSingle(paste0(name, typeName, edit.cols[i]),
+			                                     label=edit.label.cols[i],
+			                                     choices=choices,
+			                                     selected=value,
+			                                     width=select.width)
+			  
 			} else if(inputTypes[i] == 'selectInput') {
 				print('====>values')
 				print(values)
