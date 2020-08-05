@@ -209,7 +209,12 @@ dtedit <- function(input, output, name, thedata,
 										   width=select.width)
 
 			} else if(inputTypes[i] == 'selectInput') {
+				print('====>values')
+				print(values)
+				
 				value <- ifelse(missing(values), '', as.character(values[,edit.cols[i]]))
+				print('====>value')
+				print(value)
 				fields[[i]] <- shiny::selectInput(paste0(name, typeName, edit.cols[i]),
 										   label=edit.label.cols[i],
 										   choices=levels(result$thedata[,edit.cols[i]]),
