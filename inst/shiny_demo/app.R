@@ -21,7 +21,7 @@ getBooks <- function() {
 	dbClearResult(res)
 	books$Authors <- strsplit(books$Authors, ';')
 	books$Date <- as.Date(books$Date)
-	books$Publisher <- as.factor(books$Publisher)
+	# books$Publisher <- as.factor(books$Publisher)
 	return(books)
 }
 
@@ -65,8 +65,9 @@ server <- function(input, output) {
 		   thedata = books,
 		   edit.cols = c('Title', 'Authors', 'Date', 'Publisher'),
 		   edit.label.cols = c('Book Title', 'Authors', 'Publication Date', 'Publisher'),
-		   input.types = c(Title='textAreaInput'),
-		   input.choices = list(Authors = unique(unlist(books$Authors))),
+		   input.types = c(Title='textAreaInput', Publisher='selectInputSingle'),
+		   # input.choices = list(Authors = unique(unlist(books$Authors))),
+		   input.choices = list(Authors = c("A", "B"), Publisher = c(NA, "A11", "B222")),
 		   view.cols = names(books)[c(5,1,3)],
 		   callback.update = books.update.callback,
 		   callback.insert = books.insert.callback,
